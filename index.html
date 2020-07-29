@@ -3,83 +3,8 @@
   <header>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Fetch</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-
-      }
-
-      body {
-        background-color: #fff;
-        font-family: sans-serif;
-        font-size: 1.5em;
-        max-width: 90%;
-        margin: 0 auto;
-      }
-
-      h1 {
-        text-align: center;
-        background-color: #d6e738;
-        margin-top: .5em;
-        padding: .5rem;
-        border-radius: 5px;
-      }
-
-      input {
-        outline: none;
-        padding: 8px;
-        font-weight: bold;
-        border-radius: 5px;
-      }
-
-      .form {
-        margin: 1em;
-      }
-
-      .pokemon__elegido {
-        border: 2px solid #000;
-      }
-
-      .buscar {
-        background-color: rgb(97, 152, 235);
-        padding-left: 20px;
-        padding-right: 20px;
-        cursor: pointer;
-      }
-
-      .buscar:hover {
-        background-color: #48e;
-      }
-
-      .pokemon {
-        display: grid;
-        grid-template-columns: 1fr;
-        /* gap: 1rem; */
-        padding: 1rem;
-      }
-
-      .pokemon__list {
-        border: 3px solid #000;
-        border-radius: 1rem;
-        -webkit-box-shadow: 7px 9px 14px -7px rgba(0,0,0,0.75);
-        -moz-box-shadow: 7px 9px 14px -7px rgba(0,0,0,0.75);
-        box-shadow: 7px 9px 14px -7px rgba(0,0,0,0.75);
-        text-align: center;
-      }
-
-      .pokemon__name {
-        text-transform: capitalize;
-        margin: 1rem 1rem 0 1rem;
-        font-size: 2rem;
-        font-weight: bold;
-      }
-
-      .pokemon__image {
-        width: 10em;
-      }
-    </style>
   </header>
   <body>
     <h1>Pokedex</h1>
@@ -94,31 +19,6 @@
       </div>
     </main>
 
-    <script>
-      buscar = document.getElementById('buscar')
-      buscar.addEventListener('click',  (  ) => {
-        console.log( `click` )
-        pokemonElegido = document.getElementById('pokemon__elegido')
-        const url = `https://pokeapi.co/api/v2/pokemon/${pokemonElegido.value}/`
-        const pokemon = document.getElementById('pokemon__name')
-        const imagen = document.getElementById('pokemon__image')
-
-        fetch(url)
-        .then( ( response ) => {
-          return response.json()
-        })
-        .then( ( data ) => {
-          pokemon.innerHTML = `pokemon: ${data.name}`
-          imagen.src = data.sprites.front_default
-          console.log( data )
-        })
-        .catch( ( error ) => {
-          pokemon.innerHTML = "Pokemon no encontrado!"
-          imagen.src = ""
-          // console.log()
-        })
-      })
-
-    </script>
+    <script src="index.js"></script>
   </body>
 </html>
