@@ -19,7 +19,7 @@ buscar.addEventListener("click", () => {
             pokemon__right.className = "pokemon__right"
         })
         .catch((error) => {
-            pokemon.innerHTML = "Pokemon no encontrado";
+            pokemon.innerHTML = "Pokemon no encontrado :(";
             imagen.src = "";
             pokemon__right.className = "pokemon__right none"
         });
