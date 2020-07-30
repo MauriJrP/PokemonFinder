@@ -7,15 +7,24 @@
     <title>Fetch</title>
   </header>
   <body>
-    <h1>Pokedex</h1>
+    <h1 class="title">Pok&eacute;dex</h1>
     <form action="" class="form">
-      <input id="pokemon__elegido" class="pokemon__elegido" type="text">
+      <input id="pokemon__elegido" class="pokemon__elegido" type="text" autocomplete="off">
       <input id="buscar" class="buscar" type="button" value="Buscar">
     </form>
     <main class="pokemon">
       <div class="pokemon__list">
-        <p id="pokemon__name" class="pokemon__name">Busca un pokemon!</p>
-        <img id="pokemon__image" class="pokemon__image" src="" alt="">
+        <div class="pokemon__left">
+          <h2 id="pokemon__name" class="pokemon__name">Busca un pokemon!</h2>
+          <img id="pokemon__image" class="pokemon__image" src="" alt="">
+        </div>
+        <div class="pokemon__right none">
+          <h2 class="pokemon__title">Caracteristicas</h2>
+          <div class="pokemon__features">
+            <p>Tipo: </p>
+            <p>Habilidad: </p>
+          </div>
+        </div>
       </div>
     </main>
 
