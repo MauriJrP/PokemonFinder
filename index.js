@@ -1,5 +1,7 @@
 const buscar = document.getElementById("buscar");
 const pokemon__right = document.getElementsByClassName("pokemon__right")[0];
+const pokemon__features = document.getElementsByClassName("pokemon__features")[0].children
+console.log(pokemon__features)
 
 buscar.addEventListener("click", getPokemon);
 
@@ -14,10 +16,8 @@ async function getPokemon() {
         const request = await fetch(url);
         const requestJSON = await request.json();
         drawPokemon(requestJSON, pokemon, imagen);
-        console.log(requestJSON);
     } catch (error) {
         clearScreen(error, pokemon, imagen)
-
     }
 }
 
@@ -25,6 +25,9 @@ const drawPokemon =  ( requestJSON, pokemon, imagen ) => {
     pokemon.innerHTML = `pokemon: ${requestJSON.name}`;
     imagen.src = requestJSON.sprites.front_default;
     pokemon__right.className = "pokemon__right";
+    pokemon__features[0].innerHTML = `<strong>Tipo:<br></strong>${requestJSON.types[0].type.name}`
+    pokemon__features[1].innerHTML = `<strong>Habilidades:</strong><br>1.-${requestJSON.abilities[0].ability.name}<br>2.-${requestJSON.abilities[1].ability.name}`
+    console.log(requestJSON.abilities[0].ability.name);
 }
 
 const clearScreen =  ( error, pokemon, imagen ) => {
