@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 const buscar = document.getElementById("buscar");
 const pokemon__right = document.getElementsByClassName("pokemon__right")[0];
 const pokemon__features = document.getElementsByClassName("pokemon__features")[0].children
 console.log(pokemon__features)
+=======
+buscar = document.getElementById("buscar");
+pokemon__right = document.getElementsByClassName("pokemon__right")[0];
+>>>>>>> c64172ca158aa607c9eddae1df55348465492604
 
 buscar.addEventListener("click", getPokemon);
 
