@@ -9,7 +9,7 @@ buscar.addEventListener('click', getPokemon);
 
 async function getPokemon() {
   pokemonElegido = document.getElementById('pokemon__elegido');
-  const url = `https://pokeapi.co/api/v2/pokemon/${pokemonElegido.value}/`;
+  const url = `https://pokeapi.co/api/v2/pokemon/${pokemonElegido.value.toLowerCase()}/`;
   const pokemon = document.getElementById('pokemon__name');
   const imagen = document.getElementById('pokemon__image');
 
