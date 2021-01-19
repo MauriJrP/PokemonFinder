@@ -79,6 +79,7 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   padding: 0 0.5rem;
+  width: 100%;
 }
 .pokemon__div {
   background: var(--background-yellow);
