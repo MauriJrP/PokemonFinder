@@ -39,20 +39,23 @@ const drawMainPokemon = (requestJSON, pokemon, imagen, html) => {
 
   pokemon__right.className = 'pokemon__right';
   pokemon__features[0].innerHTML = `<strong>Tipo</strong><br>&nbsp${requestJSON.types[0].type.name}`;
-  // let abilitiesString = ``;
-  // requestJSON.abilities.forEach( ( abilitie ) => {
-  //   abilitiesString += `<strong>Habilidades</strong><br>&nbsp1.-${requestJSON.abilities[0].ability.name}<br>&nbsp2.-${requestJSON.abilities[1].ability.name}`;
-    
-  // })
-  // pokemon__features[1].innerHTML = abilitiesString;
-  pokemon__features[1].innerHTML = `<strong>Habilidades</strong><br>&nbsp1.-${requestJSON.abilities[0].ability.name}<br>&nbsp2.-${requestJSON.abilities[1].ability.name}`;
-  pokemon__features[2].innerHTML = `<strong>Height</strong><br>&nbsp${
+
+
+  let abilitiesString = `<strong>Habilidades</strong><ul>`;
+  requestJSON.abilities.forEach( ( abilities ) => {
+    abilitiesString += `<li>${abilities.ability.name}`;
+  })
+  pokemon__features[1].innerHTML = '</ul>' + abilitiesString;
+
+
+  // pokemon__features[1].innerHTML = `<strong>Habilidades</strong><br>&nbsp1.-${requestJSON.abilities[0].ability.name}<br>&nbsp2.-${requestJSON.abilities[1].ability.name}`;
+  pokemon__features[2].innerHTML = `<strong>Altura</strong><br>&nbsp${
     requestJSON.height * 6
   }cm.`;
-  pokemon__features[3].innerHTML = `<strong>Weight</strong><br>&nbsp${
+  pokemon__features[3].innerHTML = `<strong>Peso</strong><br>&nbsp${
     requestJSON.weight / 10
   }kg.`;
-  console.log(requestJSON);
+  // console.log(requestJSON);
 };
 
 const clearScreen = (error, pokemon, imagen, html) => {
@@ -86,7 +89,7 @@ const pokemonPage =  async (  ) => {
           images[i] = requestJSON.sprites.front_default;
           counter++;
         } catch (error) {
-          console.log( `${error}` );
+          console.error( `${error}` );
         }
       }
       return {names, images};
@@ -112,7 +115,7 @@ const pokemonList = async () => {
   return {
     drawPage: async () => {
       const page = await pokemonPageGenerator.getPage();
-      console.log( page.names );
+      // console.log( page.names );
       const html = document.implementation.createHTMLDocument();
       const pokemones = pokemonPageGenerator.pokemonTemplate(page);
       const sectionList = document.querySelector('.section-list__div');
@@ -122,8 +125,9 @@ const pokemonList = async () => {
         sectionList.lastChild.addEventListener('click', ( pokemon ) => {
           const poke = pokemon.target.className.split(' ')[0];
           getPokemon(poke, 1);
+          document.scrollingElement.scrollTop = 0;
           // console.log('adsf')
-          console.log( poke )
+          // console.log( poke )
         })
       })
     }
