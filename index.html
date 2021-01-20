@@ -24,7 +24,7 @@
           autocomplete="off"
           placeholder="charizard"
         />
-        <input id="buscar" class="buscar" type="button" value="Buscar" />
+        <input id="buscar" class="search" type="button" value="Buscar" />
       </form>
       <main class="pokemon">
         <div class="pokemon__div">
@@ -32,7 +32,7 @@
             <h2 id="pokemon__name" class="pokemon__name">Busca un pokemon!</h2>
             <!-- <img id="pokemon__image" class="pokemon__image" src="" alt="pokemon" /> -->
           </div>
-          <div class="pokemon__right none">
+          <div class="pokemon__right hide">
             <h2 class="pokemon__title">Caracteristicas</h2>
             <div class="pokemon__features">
               <p class="pokemon__feature"></p>
@@ -44,8 +44,13 @@
         </div>
       </main>
 
+      <hr>
+
       <section class="section-list">
         <div class="section-list__div">
+        </div>
+        <div class="loader hide">
+          <div class="loader__div"></div>
         </div>
         <button class="section-list__button">
           Cargar mas

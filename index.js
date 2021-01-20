@@ -5,17 +5,10 @@ const pokemon__features = document.getElementsByClassName(
 )[0].children;
 
 buscar.addEventListener('click', getPokemon);
-// console.log(pokemonElegido)
-// console.log('asfd')
 
 async function getPokemon(poke, prueba = null) {
-  // if (!prueba) {
-  //   const poke = document.getElementById('pokemon__elegido').value.toLowerCase();
-  //   console.log(poke);
-  // } else {
-  //   const url = `https://pokeapi.co/api/v2/pokemon/${poke}/`;
-  // }
-  const url = prueba ? `https://pokeapi.co/api/v2/pokemon/${poke}/` : `https://pokeapi.co/api/v2/pokemon/${document.getElementById('pokemon__elegido').value.toLowerCase()}/`;
+  const url = prueba  ? `https://pokeapi.co/api/v2/pokemon/${poke}/`
+                      : `https://pokeapi.co/api/v2/pokemon/${document.getElementById('pokemon__elegido').value.toLowerCase()}/`;
   const pokemon = document.getElementById('pokemon__name');
   const imagen = document.getElementsByClassName('pokemon__left')[0];
   const html = document.implementation.createHTMLDocument();
@@ -40,22 +33,18 @@ const drawMainPokemon = (requestJSON, pokemon, imagen, html) => {
   pokemon__right.className = 'pokemon__right';
   pokemon__features[0].innerHTML = `<strong>Tipo</strong><br>&nbsp${requestJSON.types[0].type.name}`;
 
-
   let abilitiesString = `<strong>Habilidades</strong><ul>`;
   requestJSON.abilities.forEach( ( abilities ) => {
     abilitiesString += `<li>${abilities.ability.name}`;
   })
   pokemon__features[1].innerHTML = '</ul>' + abilitiesString;
 
-
-  // pokemon__features[1].innerHTML = `<strong>Habilidades</strong><br>&nbsp1.-${requestJSON.abilities[0].ability.name}<br>&nbsp2.-${requestJSON.abilities[1].ability.name}`;
   pokemon__features[2].innerHTML = `<strong>Altura</strong><br>&nbsp${
     requestJSON.height * 6
   }cm.`;
   pokemon__features[3].innerHTML = `<strong>Peso</strong><br>&nbsp${
     requestJSON.weight / 10
   }kg.`;
-  // console.log(requestJSON);
 };
 
 const clearScreen = (error, pokemon, imagen, html) => {
@@ -64,7 +53,7 @@ const clearScreen = (error, pokemon, imagen, html) => {
   if (imagen.children[1]) {
     imagen.children[1].remove();
   }
-  pokemon__right.className = 'pokemon__right none';
+  pokemon__right.className = 'pokemon__right hide';
 };
 
 // -------- ------- ------ ----- Pokemon List ----- ------ ------- --------
@@ -76,10 +65,10 @@ const pokemonPage =  async (  ) => {
 
   return {
     getPage: async  (  ) => {
-    let names = [];
-    let images = [];
-    let requestJSON;
-    let request;
+      let names = [];
+      let images = [];
+      let requestJSON;
+      let request;
       for ( let i = 0; i <= 19; i++ ) {
         try {
           url = `${urlBase}${counter}/`
@@ -97,9 +86,11 @@ const pokemonPage =  async (  ) => {
 
     pokemonTemplate:  ( page ) => {
       let template = [];
+      let rotate = ``;
       for ( let i = 0; i <= 19; i++ ) {
+        rotate = i % 2 === 0 ? 'right' : 'left';
         const name = page.names[i]
-        template[i] = `<div class="${name} section-list__div-item">
+        template[i] = `<div class="${name} section-list__div-item ${rotate}">
                         <p class="${name} section-list__p">${name}</p>
                         <img src="${page.images[i]}" class="${name} section-list__img" alt="${name}">
                       </div>`
@@ -115,7 +106,6 @@ const pokemonList = async () => {
   return {
     drawPage: async () => {
       const page = await pokemonPageGenerator.getPage();
-      // console.log( page.names );
       const html = document.implementation.createHTMLDocument();
       const pokemones = pokemonPageGenerator.pokemonTemplate(page);
       const sectionList = document.querySelector('.section-list__div');
@@ -126,8 +116,6 @@ const pokemonList = async () => {
           const poke = pokemon.target.className.split(' ')[0];
           getPokemon(poke, 1);
           document.scrollingElement.scrollTop = 0;
-          // console.log('adsf')
-          // console.log( poke )
         })
       })
     }
@@ -136,11 +124,13 @@ const pokemonList = async () => {
 
 async function adf () {
   const asd = await pokemonList()
-  // console.log(asd)
   await asd.drawPage();
   const loadMore = document.getElementsByClassName('section-list__button')[0];
   loadMore.addEventListener('click',  async (  ) => {
+    let loader = document.querySelector('.loader');
+    loader.className += 'loader';
     await asd.drawPage()
+    loader.className += ' hide';
   })
 
 }
