@@ -16,13 +16,13 @@ async function getPokemon(poke, prueba = null) {
   try {
     const request = await fetch(url);
     const requestJSON = await request.json();
-    drawMainPokemon(requestJSON, pokemon, imagen, html);
+    renderMainPokemon(requestJSON, pokemon, imagen, html);
   } catch (error) {
     clearScreen(error, pokemon, imagen, html);
   }
 }
 
-const drawMainPokemon = (requestJSON, pokemon, imagen, html) => {
+const renderMainPokemon = (requestJSON, pokemon, imagen, html) => {
   pokemon.innerHTML = `pokemon: ${requestJSON.name}`;
   html.body.innerHTML = `<img id="pokemon__image" class="pokemon__image" src="${requestJSON.sprites.front_default}" alt="pokemon" />`;
   if (imagen.children[1]) {
@@ -65,22 +65,17 @@ const pokemonPage =  async (  ) => {
 
   return {
     getPage: async  (  ) => {
-      let names = [];
-      let images = [];
-      let requestJSON;
-      let request;
+      let urls = [];
       for ( let i = 0; i <= 19; i++ ) {
-        try {
-          url = `${urlBase}${counter}/`
-          request = await fetch(url);
-          requestJSON = await request.json();
-          names[i] = requestJSON.name;
-          images[i] = requestJSON.sprites.front_default;
-          counter++;
-        } catch (error) {
-          console.error( `${error}` );
-        }
+        urls.push(`${urlBase}${counter}/`);
+        counter++;
       }
+      const urlPromises = urls.map( url => fetch(url))
+      const request = await Promise.all(urlPromises);
+      const requestPromises = request.map( pokemonObject => pokemonObject.json() )
+      const requestJSON = await Promise.all(requestPromises);
+      const names = requestJSON.map( pokemonObject => pokemonObject.name );
+      const images = requestJSON.map( pokemonObject => pokemonObject.sprites.front_default )
       return {names, images};
     },
 
@@ -104,7 +99,7 @@ const pokemonList = async () => {
   const pokemonPageGenerator =  await pokemonPage();
 
   return {
-    drawPage: async () => {
+    renderPage: async () => {
       const page = await pokemonPageGenerator.getPage();
       const html = document.implementation.createHTMLDocument();
       const pokemones = pokemonPageGenerator.pokemonTemplate(page);
@@ -124,12 +119,12 @@ const pokemonList = async () => {
 
 async function adf () {
   const asd = await pokemonList()
-  await asd.drawPage();
+  await asd.renderPage();
   const loadMore = document.getElementsByClassName('section-list__button')[0];
   loadMore.addEventListener('click',  async (  ) => {
     let loader = document.querySelector('.loader');
     loader.className += 'loader';
-    await asd.drawPage()
+    await asd.renderPage()
     loader.className += ' hide';
   })
 
