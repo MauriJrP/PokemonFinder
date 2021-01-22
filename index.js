@@ -12,14 +12,18 @@ async function getPokemon(poke, prueba = null) {
   const pokemon = document.getElementById('pokemon__name');
   const imagen = document.getElementsByClassName('pokemon__left')[0];
   const html = document.implementation.createHTMLDocument();
+  const mainLoader = document.querySelector('.div-main-loader');
+  setTimeout( () => mainLoader.className += ' active', 100);
 
   try {
     const request = await fetch(url);
     const requestJSON = await request.json();
-    renderMainPokemon(requestJSON, pokemon, imagen, html);
+    await renderMainPokemon(requestJSON, pokemon, imagen, html);
   } catch (error) {
-    clearScreen(error, pokemon, imagen, html);
+    clearScreen(error, pokemon, imagen);
   }
+
+  setTimeout( () => mainLoader.className = 'div-main-loader', 100);
 }
 
 const renderMainPokemon = (requestJSON, pokemon, imagen, html) => {
@@ -47,7 +51,7 @@ const renderMainPokemon = (requestJSON, pokemon, imagen, html) => {
   }kg.`;
 };
 
-const clearScreen = (error, pokemon, imagen, html) => {
+const clearScreen = (error, pokemon, imagen) => {
   pokemon.innerHTML = 'Pokemon no encontrado';
   console.error(error);
   if (imagen.children[1]) {
@@ -88,6 +92,7 @@ const pokemonPage =  async (  ) => {
         template[i] = `<div class="${name} section-list__div-item ${rotate}">
                         <p class="${name} section-list__p">${name}</p>
                         <img src="${page.images[i]}" class="${name} section-list__img" alt="${name}">
+                        <div class="section-list__div-rectangle"></div>
                       </div>`
       }
       return template;
