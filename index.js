@@ -80,7 +80,8 @@ const pokemonPage =  async (  ) => {
       const requestJSON = await Promise.all(requestPromises);
       const names = requestJSON.map( pokemonObject => pokemonObject.name );
       const images = requestJSON.map( pokemonObject => pokemonObject.sprites.front_default )
-      return {names, images};
+      const types = requestJSON.map( pokemonObject => pokemonObject.types[0].type.name );
+      return {names, images, types};
     },
 
     pokemonTemplate:  ( page ) => {
@@ -92,7 +93,7 @@ const pokemonPage =  async (  ) => {
         template[i] = `<div class="${name} section-list__div-item ${rotate}">
                         <p class="${name} section-list__p">${name}</p>
                         <img src="${page.images[i]}" class="${name} section-list__img" alt="${name}">
-                        <div class="section-list__div-rectangle"></div>
+                        <div class="section-list__div-rectangle ${page.types[i]}"></div>
                       </div>`
       }
       return template;
@@ -100,10 +101,23 @@ const pokemonPage =  async (  ) => {
   }
 }
 
-const pokemonList = async () => {
+const renderPokemonList = async () => {
   const pokemonPageGenerator =  await pokemonPage();
 
   return {
+    renderTypeColors: () => {
+      types = ['grass', 'fire', 'water', 'bug', 'normal', 'poison', 'electric', 'ground', 'fairy', 'rock']
+      const typesColors = document.querySelector('.section-types');
+      const html = document.implementation.createHTMLDocument();
+      types.forEach( ( type ) => {
+        html.body.innerHTML = `<div class="section-types__div">
+                                <div class="${type}"></div>
+                                <p>${type}</p>
+                              </div>`;
+        typesColors.append(html.body.children[0]);
+      })
+    },
+
     renderPage: async () => {
       const page = await pokemonPageGenerator.getPage();
       const html = document.implementation.createHTMLDocument();
@@ -122,16 +136,17 @@ const pokemonList = async () => {
   }
 }
 
-async function adf () {
-  const asd = await pokemonList()
-  await asd.renderPage();
+async function loadPokemonPage () {
+  const pokemonList = await renderPokemonList()
+  pokemonList.renderTypeColors();
+  await pokemonList.renderPage();
   const loadMore = document.getElementsByClassName('section-list__button')[0];
   loadMore.addEventListener('click',  async (  ) => {
     let loader = document.querySelector('.loader');
     loader.className += 'loader';
-    await asd.renderPage()
+    await pokemonList.renderPage()
     loader.className += ' hide';
   })
 
 }
-adf();
+loadPokemonPage();
